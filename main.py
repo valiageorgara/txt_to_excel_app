@@ -14,7 +14,10 @@ if __name__ == '__main__':
         # Check whether file is in text format or not
         if txt_file.endswith(".txt"):
             print("Converting txt: " + txt_file + " to excel format.")
-            print(os.path.splitext(txt_file)[0])
+            # prints file name without extension
+            # print(os.path.splitext(txt_file)[0])
+
+            # store name of file in variable filename
             filename = os.path.splitext(txt_file)[0]
 
             # Workbook() takes one, non-optional, argument
@@ -36,9 +39,20 @@ if __name__ == '__main__':
 
             count = 0
 
-            # Strips the newline character
+            skip = True
+            # for each line of the txt
             for line in Lines:
                 count += 1
+
+                # skip lines until you find the cell configuration
+                if 'ADD CELL:' not in line:
+                    if skip:
+                        continue
+                else:
+                    skip = False
+
+                # once you've found cell configuration proceed with the below
+                # Strips the newline character
                 if not line.startswith("//") and not line == "\n" and not line == " \n":
                     print("Line{}: {}".format(count, line))
 
@@ -99,7 +113,7 @@ if __name__ == '__main__':
                             for ambersand in ampersand_param:
                                 worksheet.write(row, column, ambersand)
                                 column += 1
-
+                            #
                             row += 1
                             column = 0
 
